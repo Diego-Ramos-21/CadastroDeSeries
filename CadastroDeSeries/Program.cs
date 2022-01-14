@@ -6,7 +6,7 @@ namespace CadastroDeSeries
 {
     class Program
     {
-        static SerieRepositorio repositorio = new SerieRepositorio();
+        static MidiaRepositorio repositorio = new MidiaRepositorio();
         static void Main(string[] args)
         {
             // Demonstra e obtem o valor inserido pelo usuario
@@ -17,19 +17,19 @@ namespace CadastroDeSeries
                 switch (opcaoUsuario)
                 {
                     case "1":
-                        ListarSeries();
+                        ListarMidia();
                         break;
                     case "2":
-                        InserirSerie();
+                        InserirMidia();
                         break;
                     case "3":
-                        AtualizarSerie();
+                        AtualizarMidia();
                         break;
                     case "4":
-                        ExcluirSerie();
+                        ExcluirMidia();
                         break;
                     case "5":
-                        VisualizarSerie();
+                        VisualizarMidia();
                         break;
                     case "C":
                         Console.Clear();
@@ -42,77 +42,85 @@ namespace CadastroDeSeries
             Console.WriteLine("Obrigado por utilizar nossos serviços.");
             Console.ReadLine();
         }
-        // Marca o registro da serie como excluido
-        private static void ExcluirSerie()
+        // Marca o registro da mídia como excluido
+        private static void ExcluirMidia()
         {
-            Console.Write("Digite o ID da série: ");
-            int.TryParse(Console.ReadLine(), out int indiceSerie);
-            repositorio.Exclui(indiceSerie);
+            Console.Write("Digite o ID da mídia: ");
+            int.TryParse(Console.ReadLine(), out int indiceMidia);
+            repositorio.Exclui(indiceMidia);
         }
-        // Visualiza o registro geral da serie
-        private static void VisualizarSerie()
+        // Visualiza o registro geral da mídia
+        private static void VisualizarMidia()
         {
-            Console.Write("Digite o ID da série: ");
-            int.TryParse(Console.ReadLine(), out int indiceserie);
-            Serie serie = repositorio.RetornaPorId(indiceserie);
-            Console.WriteLine(serie);
+            Console.Write("Digite o ID da mídia: ");
+            int.TryParse(Console.ReadLine(), out int indiceMidia);
+            Midia midia = repositorio.RetornaPorId(indiceMidia);
+            Console.WriteLine(midia);
         }
-        // Atualiza o registro da serie escolhida
-        private static void AtualizarSerie()
+        // Atualiza o registro da mídia escolhida
+        private static void AtualizarMidia()
         {
-            Console.Write("Digite o ID da série: ");
-            int.TryParse(Console.ReadLine(), out int indiceSerie);
-            foreach (int index in Enum.GetValues(typeof(Genero))) Console.WriteLine($"{index} - {Enum.GetName(typeof(Genero), index)}"); // Captura valores no Enum
+            Console.Write("Digite o ID da mídia: ");
+            int.TryParse(Console.ReadLine(), out int indiceMidia);
+            foreach (int index in Enum.GetValues(typeof(Genero))) Console.WriteLine($"{index} - {Enum.GetName(typeof(Genero), index)}"); // Captura valores no Enum genero
             Console.Write("Digite o gênero entre as opções acima: ");
             int.TryParse(Console.ReadLine(), out int entradaGenero);
-            Console.Write("Digite o Título da série: ");
+            foreach (int index in Enum.GetValues(typeof(Categoria))) Console.WriteLine($"{index} - {Enum.GetName(typeof(Categoria), index)}"); // Captura valores no Enum de categoria
+            Console.Write("Digite a categoria entre as opções acima: ");
+            int.TryParse(Console.ReadLine(), out int entradaCategoria);
+            Console.Write("Digite o Título da mídia: ");
             string entradaTitulo = Console.ReadLine();
-            Console.Write("Digite o Ano de início da série: ");
+            Console.Write("Digite o Ano de início da mídia: ");
             int.TryParse(Console.ReadLine(), out int entradaAno);
-            Console.Write("Digite a descrição da série: ");
+            Console.Write("Digite a descrição da mídia: ");
             string entradaDescricao = Console.ReadLine();
-            Serie atualizaSerie = new Serie(id: indiceSerie,
+            Midia atualizaMidia = new Midia(id: indiceMidia,
                                             genero: (Genero)entradaGenero,
+                                            categoria: (Categoria)entradaCategoria,
                                             titulo: entradaTitulo,
                                             ano: entradaAno,
                                             descricao: entradaDescricao);
-            repositorio.Atualiza(indiceSerie, atualizaSerie);
+            repositorio.Atualiza(indiceMidia, atualizaMidia);
         }
-        // Lista todas as series no registro
-        private static void ListarSeries()
+        // Lista todas as mídia no registro
+        private static void ListarMidia()
         {
-            Console.WriteLine("Listar séries");
-            List<Serie> lista = repositorio.Lista();
+            Console.WriteLine("Listar mídia");
+            List<Midia> lista = repositorio.Lista();
             if (lista.Count == 0)
             {
-                Console.WriteLine("Nenhuma série cadastrada");
+                Console.WriteLine("Nenhuma mídia cadastrada");
                 return;
             }
-            foreach (Serie serie in lista)
+            foreach (Midia midia in lista)
             {
-                bool excluido = serie.retornaExcluido();
-                Console.WriteLine($"#ID {serie.retornaId()}: - {serie.retornaTitulo()} {(excluido ? "*Excluído*" : "")}");
+                bool excluido = midia.retornaExcluido();
+                Console.WriteLine($"#ID {midia.retornaId()}: - {midia.retornaTitulo()} {(excluido ? "*Excluído*" : "")}");
             }
         }
-        // Insere novas series no registro
-        private static void InserirSerie()
+        // Insere novas mídia no registro
+        private static void InserirMidia()
         {
-            Console.WriteLine("Inserir nova série");
-            foreach (int index in Enum.GetValues(typeof(Genero))) Console.WriteLine($"{index} - {Enum.GetName(typeof(Genero), index)}"); // Captura valores no Enum
+            Console.WriteLine("Inserir nova mídia ");
+            foreach (int index in Enum.GetValues(typeof(Genero))) Console.WriteLine($"{index} - {Enum.GetName(typeof(Genero), index)}"); // Captura valores no Enum de genero
             Console.Write("Digite o gênero entre as opções acima: ");
             int.TryParse(Console.ReadLine(), out int entradaGenero);
-            Console.Write("Digite o Título da série: ");
+            foreach (int index in Enum.GetValues(typeof(Categoria))) Console.WriteLine($"{index} - {Enum.GetName(typeof(Categoria), index)}"); // Captura valores no Enum de categoria
+            Console.Write("Digite a categoria entre as opções acima: ");
+            int.TryParse(Console.ReadLine(), out int entradaCategoria);
+            Console.Write("Digite o Título da mídia: ");
             string entradaTitulo = Console.ReadLine();
-            Console.Write("Digite o Ano de início da série: ");
+            Console.Write("Digite o Ano de início da mídia: ");
             int.TryParse(Console.ReadLine(), out int entradaAno);
-            Console.Write("Digite a descrição da série: ");
+            Console.Write("Digite a descrição da mídia: ");
             string entradaDescricao = Console.ReadLine();
-            Serie novaSerie = new Serie(id: repositorio.ProximoId(),
+            Midia novaMidia = new Midia(id: repositorio.ProximoId(),
                                         genero: (Genero)entradaGenero,
+                                        categoria: (Categoria)entradaCategoria,
                                         titulo: entradaTitulo,
                                         ano: entradaAno,
                                         descricao: entradaDescricao);
-            repositorio.Insere(novaSerie);
+            repositorio.Insere(novaMidia);
         }
         // Mostra o menu de opções para o usuario e retorna o valor selecionado pelo mesmo
         private static string ObterOpcaoUsuario()
@@ -120,11 +128,11 @@ namespace CadastroDeSeries
             Console.WriteLine();
             Console.WriteLine("DIO série a seu dispor!!");
             Console.WriteLine("Informe a opção desejada:");
-            Console.WriteLine("1- Listar séries");
-            Console.WriteLine("2- Inserir nova série");
-            Console.WriteLine("3- Atualizar série");
-            Console.WriteLine("4- Excluir série");
-            Console.WriteLine("5- Visualizar série");
+            Console.WriteLine("1- Listar mídias");
+            Console.WriteLine("2- Inserir nova mídia");
+            Console.WriteLine("3- Atualizar mídia");
+            Console.WriteLine("4- Excluir mídia");
+            Console.WriteLine("5- Visualizar mídia");
             Console.WriteLine("C- Limpar Tela");
             Console.WriteLine("X- Sair");
             Console.WriteLine();
